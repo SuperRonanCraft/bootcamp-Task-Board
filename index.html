@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
+  <head>
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
   <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
+    <header>
+      <h1>Task Board</h1>
+      <p>A simple board for task management</p>
+    </header>
+    <main>
+      <button id="newtask">Add Task</button>
+      <div id="tasks">
+        <div id="todo" class="task-container">
+          <h2>To Do</h2>
+          <div class="taskbox"></div>
+        </div>
+        <div id="inprogress" class="task-container">
+          <h2>In Progress</h2>
+          <div class="taskbox"></div>
+        </div>
+        <div id="done" class="task-container">
+          <h2>Done</h2>
+          <div class="taskbox"></div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

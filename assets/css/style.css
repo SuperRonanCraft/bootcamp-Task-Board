@@ -1,0 +1,64 @@
+* {
+  /* border: 1px solid red; */
+  /* margin: 3px; */
+  /* font-family: "Tohoma", "Arial", "sans serif"; */
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+  font-size: 250%;
+}
+
+header {
+  text-align: center;
+  border-bottom: 3px gray solid;
+  padding: 20px;
+}
+
+header h1 {
+  padding: 10px;
+}
+
+/* Display flex to center items horizontally */
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+/* All button stylings */
+button {
+  border: none;
+  background: green;
+  color: whitesmoke;
+  border-radius: 2px;
+  padding: 8px;
+  margin: auto;
+}
+/* New background color on hover */
+main button:hover {
+  background-color: #2980b9;
+}
+
+main #tasks {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.task-container {
+  padding: 20px 10px 0 10px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.task-container h2 {
+  text-align: center;
+}
+
+.taskbox {
+  height: 500px;
+  margin-top: 10px;
+  background-color: rgb(228, 228, 228);
+}
