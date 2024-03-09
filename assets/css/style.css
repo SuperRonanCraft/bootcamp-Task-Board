@@ -1,130 +1,16 @@
-* {
-  /* border: 1px solid blue; */
-  /* margin: 3px; */
-  /* font-family: "Tohoma", "Arial", "sans serif"; */
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
 }
 
-:root {
-  --border-rad: 5px;
+.swim-lanes {
+  min-height: 60vh;
 }
 
-h1 {
-  font-size: 250%;
-}
-h2 {
-  font-size: 150%;
-  font-weight: normal;
+.task-card {
+  margin: 0 auto;
 }
 
-header {
-  text-align: center;
-  border-bottom: 3px rgb(165, 165, 165) solid;
-  padding: 20px;
-}
-
-header h1 {
-  padding: 10px;
-}
-
-/* Display flex to center items horizontally */
-main {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-/* All button stylings */
-button {
-  border: none;
-  background: green;
-  color: whitesmoke;
-  border-radius: var(--border-rad);
-  padding: 8px;
-  margin: auto;
-}
-
-button.task-delete {
-  background: rgb(187, 0, 0);
-  /* border: 2px white solid; */
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-/* New background color on hover */
-button:hover {
-  background-color: #2980b9;
-}
-
-button.task-delete:hover {
-  background-color: darkred;
-}
-
-main #tasks {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-/* Container Styling for the container of the 3 tasks */
-.task-container {
-  padding: 20px 10px 0 10px;
-  width: 100%;
-  max-width: 300px;
-}
-
-.task-container h2 {
-  text-align: center;
-}
-
-/* Styling for each task*/
-.taskbox {
-  height: 500px;
-  margin-top: 10px;
-  padding: 10px;
-  background-color: rgb(228, 228, 228);
-}
-
-.taskbox div {
-  display: flex;
-  flex-direction: column;
-}
-
-.task {
-  text-align: center;
-  margin: 10px;
-  border-radius: var(--border-rad);
-}
-
-.task-title {
-  /* border-top-left-radius: var(--border-rad); */
-  /* border-top-right-radius: var(--border-rad); */
-  border-bottom: 2px gray solid;
-  /* background-color: rgb(200, 0, 0); */
-  padding: 10px;
-}
-
-.task-content {
-  padding: 10px;
-}
-
-.task-date {
-  padding: 10px;
-}
-
-/* Task color schemes */
-.time-good {
-  color: black;
-  background-color: whitesmoke;
-}
-
-.time-warning {
-  color: black;
-  background-color: yellow;
-}
-
-.time-urgent {
-  color: white;
-  background-color: red;
+.task-card:hover {
+  cursor: grab;
 }
