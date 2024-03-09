@@ -5,6 +5,10 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+:root {
+  --border-rad: 5px;
+}
+
 h1 {
   font-size: 250%;
 }
@@ -15,7 +19,7 @@ h2 {
 
 header {
   text-align: center;
-  border-bottom: 3px gray solid;
+  border-bottom: 3px rgb(165, 165, 165) solid;
   padding: 20px;
 }
 
@@ -36,21 +40,25 @@ button {
   border: none;
   background: green;
   color: whitesmoke;
-  border-radius: 2px;
+  border-radius: var(--border-rad);
   padding: 8px;
   margin: auto;
 }
 
 button.task-delete {
-  background: red;
-  border: 1px white solid;
+  background: rgb(187, 0, 0);
+  /* border: 2px white solid; */
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
 /* New background color on hover */
-main button:hover {
+button:hover {
   background-color: #2980b9;
+}
+
+button.task-delete:hover {
+  background-color: darkred;
 }
 
 main #tasks {
@@ -86,20 +94,37 @@ main #tasks {
 .task {
   text-align: center;
   margin: 10px;
-  color: rgb(228, 228, 228);
-  background-color: red;
-  border-radius: 5px;
+  border-radius: var(--border-rad);
 }
 
 .task-title {
-  border-bottom: 1px solid gray;
-  background-color: rgb(200, 0, 0);
+  /* border-top-left-radius: var(--border-rad); */
+  /* border-top-right-radius: var(--border-rad); */
+  border-bottom: 2px gray solid;
+  /* background-color: rgb(200, 0, 0); */
   padding: 10px;
 }
 
 .task-content {
   padding: 10px;
 }
+
 .task-date {
   padding: 10px;
+}
+
+/* Task color schemes */
+.time-good {
+  color: black;
+  background-color: whitesmoke;
+}
+
+.time-warning {
+  color: black;
+  background-color: yellow;
+}
+
+.time-urgent {
+  color: white;
+  background-color: red;
 }
