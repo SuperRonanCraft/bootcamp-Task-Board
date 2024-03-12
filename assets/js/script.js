@@ -72,6 +72,8 @@ function renderTaskList() {
   if (taskList === null) return;
   for (let task of taskList) {
     const taskEl = createTaskCard(task);
+    //Make Task Draggable
+    taskEl.attr("draggable", "true");
 
     //Set the element via its task type
     switch (task.type) {
@@ -97,19 +99,45 @@ function handleAddTask(event) {
     title: inputTitle.val(),
     date: inputDate.val(),
     description: inputDescription.val(),
-    type: "progress",
+    type: "todo",
     id: generateTaskId(),
   };
 
+  //Reset form values
+  inputTitle.val("");
+  inputDate.val("");
+  inputDescription.val("");
+
   taskList = JSON.parse(localStorage.getItem("tasks")) || [];
   taskList.push(taskData);
-  localStorage.setItem("tasks", JSON.stringify(taskList));
+  saveTasks();
 
+  //Render all tasks
   renderTaskList();
 }
 
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(taskList));
+}
+
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {}
+function handleDeleteTask(event) {
+  //Grab the parent of the button
+  const taskContainer = $(this).parent();
+  //Get the id of the task
+  const taskId = $(taskContainer).data("id");
+  //Remove taskId from local storage
+  for (let i = 0; i < taskList.length; i++) {
+    if (taskList[i].id === taskId) {
+      taskList.splice(i, 1);
+      break;
+    }
+  }
+  //Save modified taskList
+  saveTasks();
+  //Render all tasks again
+  renderTaskList();
+}
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {}
@@ -124,11 +152,9 @@ $(document).ready(function () {
   });
   //Add click event to forms submit button
   $("#submitTask").click(handleAddTask);
-  $("#tasks").on("click", ".btn-danger", function () {
-    //Get the id of the task
-    //Grab the parent of the button
-    const taskContainer = $(this).parent();
-    const taskId = $(taskContainer).data("id");
-    console.log(taskId);
-  });
+  $("#tasks").on("click", ".btn-danger", handleDeleteTask);
+  $(".card-body")
+    //Need a dragover for drop to work?
+    .on("dragover", false)
+    .on("drop", handleDrop);
 });
