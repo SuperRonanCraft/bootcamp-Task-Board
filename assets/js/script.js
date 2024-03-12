@@ -10,7 +10,15 @@ const tasksProgress = $("#in-progress-cards");
 const tasksDone = $("#done-cards");
 
 // Todo: create a function to generate a unique task id
-function generateTaskId() {}
+function generateTaskId() {
+  if (nextId === null) {
+    nextId = 0;
+  } else {
+    nextId++;
+  }
+  localStorage.setItem("nextId", JSON.stringify(nextId));
+  return nextId;
+}
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
@@ -41,6 +49,7 @@ function createTaskCard(task) {
 
   //Add task to todo
   taskContainer.addClass("task-card");
+  taskContainer.data("id", task.id);
 
   //Set how important this is via due date
   //taskContainer.addClass("task-danger");
@@ -89,6 +98,7 @@ function handleAddTask(event) {
     date: inputDate.val(),
     description: inputDescription.val(),
     type: "progress",
+    id: generateTaskId(),
   };
 
   taskList = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -114,5 +124,11 @@ $(document).ready(function () {
   });
   //Add click event to forms submit button
   $("#submitTask").click(handleAddTask);
-  $("#tasks").on("click", "btn-danger", function () {});
+  $("#tasks").on("click", ".btn-danger", function () {
+    //Get the id of the task
+    //Grab the parent of the button
+    const taskContainer = $(this).parent();
+    const taskId = $(taskContainer).data("id");
+    console.log(taskId);
+  });
 });
