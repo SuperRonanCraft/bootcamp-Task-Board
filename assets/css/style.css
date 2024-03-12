@@ -9,8 +9,25 @@ body {
 
 .task-card {
   margin: 0 auto;
+  border-radius: 5px;
+  background-color: rgb(224, 224, 224);
+}
+
+.task-card h2 {
+  border-bottom: 2px rgb(87, 87, 87) solid;
+  margin: 5px;
 }
 
 .task-card:hover {
   cursor: grab;
+}
+
+.task-danger {
+  color: white;
+  background-color: rgb(255, 73, 73);
+}
+
+.task-warning {
+  color: white;
+  background-color: rgb(255, 180, 19);
 }
