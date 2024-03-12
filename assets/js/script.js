@@ -19,7 +19,19 @@ function createTaskCard(task) {}
 function renderTaskList() {}
 
 // Todo: create a function to handle adding a new task
-function handleAddTask(event) {}
+function handleAddTask(event) {
+  //Hides the modal/form
+  formModal.modal("hide");
+
+  const taskData = {
+    title: inputTitle.val(),
+    date: inputDate.val(),
+    description: inputDescription.val(),
+    type: "todo",
+  };
+
+  createTaskCard(taskData);
+}
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {}
@@ -33,4 +45,6 @@ $(document).ready(function () {
   $("#formDate").datepicker({
     format: "MM/DD/YYYY",
   });
+  //Add click event to forms submit button
+  $("#submitTask").click(handleAddTask);
 });
