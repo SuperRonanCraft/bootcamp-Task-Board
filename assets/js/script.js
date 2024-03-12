@@ -1,6 +1,13 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+const formModal = $("#formModal");
+const inputTitle = $("#formTitle");
+const inputDate = $("#formDate");
+const inputDescription = $("#formDescription");
+const tasksTodo = $("#todo-cards");
+const tasksProgress = $("#in-progress-cards");
+const tasksDone = $("#done-cards");
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {}
@@ -22,7 +29,8 @@ function handleDrop(event, ui) {}
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-  //   document.getElementById("btn-success").addEventListener("click", () => {
-  //     console.log("Clicked");
-  //   });
+  //Set Datepicker on date picking element on Modal
+  $("#formDate").datepicker({
+    format: "MM/DD/YYYY",
+  });
 });
