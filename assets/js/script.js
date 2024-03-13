@@ -9,6 +9,9 @@ const tasksTodo = $("#todo-cards");
 const tasksProgress = $("#in-progress-cards");
 const tasksDone = $("#done-cards");
 
+//Data
+let dragged = null;
+
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
   if (nextId === null) {
@@ -126,7 +129,13 @@ function handleDeleteTask(event) {
   const taskContainer = $(this).parent();
   //Get the id of the task
   const taskId = $(taskContainer).data("id");
-  //Remove taskId from local storage
+  //Remove taskId from local storage and save
+  removeTask(taskId);
+  //Render all tasks again
+  renderTaskList();
+}
+
+function removeTask(taskId) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id === taskId) {
       taskList.splice(i, 1);
@@ -135,12 +144,46 @@ function handleDeleteTask(event) {
   }
   //Save modified taskList
   saveTasks();
-  //Render all tasks again
+}
+
+//Retrieve the task object from the taskList
+function getTask(taskId) {
+  for (let i = 0; i < taskList.length; i++) {
+    if (taskList[i].id === taskId) {
+      return taskList[i];
+    }
+  }
+}
+
+//Change the status of a task and render tasks again
+function changeTaskType(taskId, newType) {
+  const task = getTask(taskId);
+  task.type = newType;
   renderTaskList();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {}
+function handleDrop(event) {
+  const tasksListEl = $(event.target).children("div");
+  //Get the element we are dropping
+  const draggedTask = dragged;
+  //Get the taskId of the dragged
+  const taskId = $(draggedTask).data("id");
+
+  //Get which task list we just dropped this task on
+  switch (tasksListEl.attr("id")) {
+    //Todo Div
+    case tasksTodo.attr("id"):
+      changeTaskType(taskId, "todo");
+      break;
+    case tasksProgress.attr("id"):
+      changeTaskType(taskId, "progress");
+      break;
+    case tasksDone.attr("id"):
+      changeTaskType(taskId, "done");
+      break;
+  }
+}
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
@@ -157,4 +200,8 @@ $(document).ready(function () {
     //Need a dragover for drop to work?
     .on("dragover", false)
     .on("drop", handleDrop);
+  //Save to data what task we are dragging
+  $(document).on("dragstart", ".task-card", function () {
+    dragged = this;
+  });
 });
