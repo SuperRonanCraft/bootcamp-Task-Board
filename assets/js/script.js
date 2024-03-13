@@ -197,6 +197,7 @@ function handleDrop(event) {
       changeTaskType(taskId, "done");
       break;
   }
+  saveTasks();
   //Render the task list again when dropping
   renderTaskList();
 }
