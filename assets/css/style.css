@@ -31,3 +31,7 @@ body {
   color: white;
   background-color: rgb(255, 180, 19);
 }
+
+.btn-danger {
+  border-color: white;
+}

@@ -54,10 +54,24 @@ function createTaskCard(task) {
   taskContainer.addClass("task-card");
   taskContainer.data("id", task.id);
 
-  //Set how important this is via due date
-  //taskContainer.addClass("task-danger");
+  //Set how important this is via due date or if its donne
+  const daysLeft = getDaysLeft(task.date);
+  let priority = "task-danger";
+  if (daysLeft >= 6 || task.type === "done") {
+    priority = "task-good";
+  } else if (daysLeft >= 2) {
+    priority = "task-warning";
+  }
+  taskContainer.addClass(priority);
 
   return taskContainer;
+}
+
+function getDaysLeft(date) {
+  const now = dayjs();
+  const from = dayjs(date);
+  const diff = from.diff(now, "day");
+  return diff;
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -159,7 +173,6 @@ function getTask(taskId) {
 function changeTaskType(taskId, newType) {
   const task = getTask(taskId);
   task.type = newType;
-  renderTaskList();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -183,6 +196,8 @@ function handleDrop(event) {
       changeTaskType(taskId, "done");
       break;
   }
+  //Render the task list again when dropping
+  renderTaskList();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
