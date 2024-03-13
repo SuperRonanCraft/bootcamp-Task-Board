@@ -22,16 +22,19 @@ body {
   cursor: grab;
 }
 
+/* Styling when a task is dangerously close to being due, or overdue */
 .task-danger {
   color: white;
   background-color: rgb(255, 73, 73);
 }
 
+/* Style when a task is close to being due */
 .task-warning {
   color: white;
   background-color: rgb(255, 180, 19);
 }
 
+/* Style the delete button to stand out on red background */
 .btn-danger {
   border-color: white;
 }

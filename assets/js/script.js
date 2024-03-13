@@ -50,16 +50,16 @@ function createTaskCard(task) {
   taskDelete.css("margin-bottom", "5px");
   taskContainer.append(taskDelete);
 
-  //Add task to todo
+  //Add classes and taskid to data
   taskContainer.addClass("task-card");
   taskContainer.data("id", task.id);
 
-  //Set how important this is via due date or if its donne
+  //Set how important this task is via due date or if status is done
   const daysLeft = getDaysLeft(task.date);
   let priority = "task-danger";
-  if (daysLeft >= 6 || task.type === "done") {
+  if (daysLeft >= 3 || task.type === "done") {
     priority = "task-good";
-  } else if (daysLeft >= 2) {
+  } else if (daysLeft >= 1) {
     priority = "task-warning";
   }
   taskContainer.addClass(priority);
@@ -67,6 +67,7 @@ function createTaskCard(task) {
   return taskContainer;
 }
 
+//Via the DayJS api, get how many days a task is due from todays date
 function getDaysLeft(date) {
   const now = dayjs();
   const from = dayjs(date);
