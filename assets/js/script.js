@@ -7,8 +7,6 @@ const tasksTodo = $("#todo-cards");
 const tasksProgress = $("#in-progress-cards");
 const tasksDone = $("#done-cards");
 
-//Data
-let dragged = null;
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
@@ -53,7 +51,7 @@ function createTaskCard(task) {
   taskContainer.append(taskDelete);
 
   //Add classes and taskid to data
-  taskContainer.addClass("task-card");
+  taskContainer.addClass("task-card draggable");
   taskContainer.data("id", task.id);
 
   //Set how important this task is via due date or if status is done
@@ -65,6 +63,7 @@ function createTaskCard(task) {
     priority = "task-warning";
   }
   taskContainer.addClass(priority);
+  taskContainer.attr("data-taskid", task.id);
 
   return taskContainer;
 }
@@ -92,22 +91,35 @@ function renderTaskList() {
   if (taskList === null) return;
   for (let task of taskList) {
     const taskEl = createTaskCard(task);
-    //Make Task Draggable
-    taskEl.attr("draggable", "true");
-
     //Set the element via its task type
+    // console.log(task.type);
     switch (task.type) {
-      case "todo":
+      case "to-do":
         tasksTodo.append(taskEl);
         break;
-      case "progress":
+      case "in-progress":
         tasksProgress.append(taskEl);
         break;
-      case "done":
+      default:
         tasksDone.append(taskEl);
-        break;
     }
   }
+
+  $(".draggable").draggable({
+    opacity: 0.7,
+    zIndex: 100,
+    // ? This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
+    helper: function (e) {
+      // ? Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+      const original = $(e.target).hasClass(".draggable")
+        ? $(e.target)
+        : $(e.target).closest(".draggable");
+      // ? Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+      return original.clone().css({
+        width: original.outerWidth(),
+      });
+    },
+  });
 }
 
 // Todo: create a function to handle adding a new task
@@ -119,7 +131,7 @@ function handleAddTask(event) {
     title: inputTitle.val(),
     date: inputDate.val(),
     description: inputDescription.val(),
-    type: "todo",
+    type: "to-do",
     id: generateTaskId(),
   };
 
@@ -170,7 +182,7 @@ function removeTask(taskId) {
 //Retrieve the specific task object from the taskList via its id
 function getTask(taskId) {
   for (let i = 0; i < taskList.length; i++) {
-    if (taskList[i].id === taskId) {
+    if (taskList[i].id == taskId) {
       return taskList[i];
     }
   }
@@ -180,29 +192,29 @@ function getTask(taskId) {
 //Change the status of a task and render tasks again
 function changeTaskType(taskId, newType) {
   const task = getTask(taskId);
-  if (task !== null) task.type = newType;
+  if (task !== null) {
+    task.type = newType;
+  }
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event) {
-  const tasksListEl = $(event.target).children("div");
+function handleDrop(event, ui) {
   //Get the element we are dropping
-  const draggedTask = dragged;
+  const taskEl = ui.draggable[0];
   //Get the taskId of the dragged
-  const taskId = $(draggedTask).data("id");
-
+  const taskId = taskEl.dataset.taskid;
   //Get which task list we just dropped this task on
-  switch (tasksListEl.attr("id")) {
+  console.log(event.target.id + " " + tasksTodo.attr("id"));
+  switch (event.target.id) {
     //Todo Div
-    case tasksTodo.attr("id"):
-      changeTaskType(taskId, "todo");
+    case "to-do":
+      changeTaskType(taskId, "to-do");
       break;
-    case tasksProgress.attr("id"):
-      changeTaskType(taskId, "progress");
+    case "in-progress":
+      changeTaskType(taskId, "in-progress");
       break;
-    case tasksDone.attr("id"):
+    default:
       changeTaskType(taskId, "done");
-      break;
   }
   saveTasks();
   //Render the task list again when dropping
@@ -219,13 +231,17 @@ $(document).ready(function () {
   //Add click event to forms submit button
   $("#submitTask").click(handleAddTask);
   $("#tasks").on("click", ".btn-danger", handleDeleteTask);
-  $(".card-body")
-    //Need a dragover for drop to work?
-    /* Got this from https://stackoverflow.com/questions/19223352/jquery-ondrop-not-firing */
-    .on("dragover", false)
-    .on("drop", handleDrop);
-  //Save what task we are dragging on drag start
-  $(document).on("dragstart", ".task-card", function () {
-    dragged = this;
+  $(".lane").droppable({
+    accept: ".draggable",
+    drop: handleDrop,
   });
+  // $(".card-body")
+  //   //Need a dragover for drop to work?
+  //   /* Got this from https://stackoverflow.com/questions/19223352/jquery-ondrop-not-firing */
+  //   .on("dragover", false)
+  //   .on("drop", handleDrop);
+  //Save what task we are dragging on drag start
+  // $(document).on("dragstart", ".task-card", function () {
+  //   dragged = this;
+  // });
 });
