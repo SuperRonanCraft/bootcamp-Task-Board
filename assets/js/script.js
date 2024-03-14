@@ -1,6 +1,4 @@
-// Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+//Dependencies
 const formModal = $("#formModal");
 const inputTitle = $("#formTitle");
 const inputDate = $("#formDate");
@@ -11,7 +9,11 @@ const tasksDone = $("#done-cards");
 
 //Data
 let dragged = null;
+// Retrieve tasks and nextId from localStorage
+let taskList = JSON.parse(localStorage.getItem("tasks"));
+let nextId = JSON.parse(localStorage.getItem("nextId"));
 
+//Functions
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
   if (nextId === null) {
@@ -126,6 +128,7 @@ function handleAddTask(event) {
   inputDate.val("");
   inputDescription.val("");
 
+  //Set and save our new task to the list and localStorage
   taskList = JSON.parse(localStorage.getItem("tasks")) || [];
   taskList.push(taskData);
   saveTasks();
@@ -134,6 +137,7 @@ function handleAddTask(event) {
   renderTaskList();
 }
 
+//Save the taskList to localStorage
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(taskList));
 }
@@ -150,9 +154,11 @@ function handleDeleteTask(event) {
   renderTaskList();
 }
 
+//Remove a task from the taskList
 function removeTask(taskId) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id === taskId) {
+      //Remove this and only this task from the list
       taskList.splice(i, 1);
       break;
     }
@@ -161,19 +167,20 @@ function removeTask(taskId) {
   saveTasks();
 }
 
-//Retrieve the task object from the taskList
+//Retrieve the specific task object from the taskList via its id
 function getTask(taskId) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id === taskId) {
       return taskList[i];
     }
   }
+  return null;
 }
 
 //Change the status of a task and render tasks again
 function changeTaskType(taskId, newType) {
   const task = getTask(taskId);
-  task.type = newType;
+  if (task !== null) task.type = newType;
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -202,22 +209,22 @@ function handleDrop(event) {
   renderTaskList();
 }
 
+//User Interactions/Inits
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
   //Render all saved Tasks
   renderTaskList();
   //Set Datepicker on date picking element on Modal
-  $("#formDate").datepicker({
-    format: "MM/DD/YYYY",
-  });
+  $("#formDate").datepicker();
   //Add click event to forms submit button
   $("#submitTask").click(handleAddTask);
   $("#tasks").on("click", ".btn-danger", handleDeleteTask);
   $(".card-body")
     //Need a dragover for drop to work?
+    /* Got this from https://stackoverflow.com/questions/19223352/jquery-ondrop-not-firing */
     .on("dragover", false)
     .on("drop", handleDrop);
-  //Save to data what task we are dragging
+  //Save what task we are dragging on drag start
   $(document).on("dragstart", ".task-card", function () {
     dragged = this;
   });
