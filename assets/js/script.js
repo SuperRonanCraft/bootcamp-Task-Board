@@ -30,50 +30,47 @@ function createTaskCard(task) {
   //Create Title
   const taskTitle = $("<h2>");
   taskTitle.text(task.title);
+  taskTitle.addClass("card-header");
   taskContainer.append(taskTitle);
 
   //Create Description
   const taskDescription = $("<p>");
   taskDescription.text(task.description);
+  taskDescription.addClass("card-body");
   taskContainer.append(taskDescription);
 
   //Create Date
   const taskDate = $("<p>");
   taskDate.text(task.date);
+  taskDate.addClass("card-text");
   taskContainer.append(taskDate);
 
   //Create a delete button
   const taskDelete = $("<button>");
   taskDelete.text("Delete");
   //Using Bootstrap css styling
-  taskDelete.addClass("btn-danger").addClass("btn");
-  taskDelete.css("margin-bottom", "5px");
+  taskDelete.addClass("btn btn-danger mx-auto my-1");
+  // taskDelete.css("margin-bottom", "5px");
   taskContainer.append(taskDelete);
 
-  //Add classes and taskid to data
-  taskContainer.addClass("task-card draggable");
-  taskContainer.data("id", task.id);
-
   //Set how important this task is via due date or if status is done
-  const daysLeft = getDaysLeft(task.date);
-  let priority = "task-danger";
-  if (daysLeft >= 3 || task.type === "done") {
-    priority = "task-good";
-  } else if (daysLeft >= 1) {
-    priority = "task-warning";
+  if (task.date && task.type !== "done") {
+    const now = dayjs();
+    const dueDate = dayjs(task.date, "DD/MM/YYYY");
+
+    if (now.isSame(dueDate)) {
+      taskContainer.addClass("bg-warning text-white");
+    } else if (now.isAfter(dueDate)) {
+      taskContainer.addClass("bg-danger text-white");
+      taskDelete.addClass("border-light");
+    }
   }
-  taskContainer.addClass(priority);
+  //Add classes and taskid to element data
+  taskContainer.data("id", task.id);
+  taskContainer.addClass("card task-card draggable my-3");
   taskContainer.attr("data-taskid", task.id);
 
   return taskContainer;
-}
-
-//Via the DayJS api, get how many days a task is due from todays date
-function getDaysLeft(date) {
-  const now = dayjs();
-  const from = dayjs(date);
-  const diff = from.diff(now, "day");
-  return diff;
 }
 
 // Todo: create a function to render the task list and make cards draggable

@@ -7,34 +7,35 @@ body {
   min-height: 60vh;
 }
 
+/* 
 .task-card {
   margin: 0 auto;
   border-radius: 5px;
   background-color: rgb(224, 224, 224);
-}
-
+} */
+/* 
 .task-card h2 {
   border-bottom: 2px rgb(87, 87, 87) solid;
   margin: 5px;
-}
+} */
 
-.task-card:hover {
+/* .task-card:hover {
   cursor: grab;
-}
+} */
 
 /* Styling when a task is dangerously close to being due, or overdue */
-.task-danger {
+/* .task-danger {
   color: white;
   background-color: rgb(255, 73, 73);
-}
+} */
 
 /* Style when a task is close to being due */
-.task-warning {
+/* .task-warning {
   color: white;
   background-color: rgb(255, 180, 19);
-}
+} */
 
 /* Style the delete button to stand out on red background */
-.btn-danger {
+/* .btn-danger {
   border-color: white;
-}
+} */
